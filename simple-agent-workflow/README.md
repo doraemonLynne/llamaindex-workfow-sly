@@ -34,7 +34,7 @@ You will also need:
    Open your browser and go to:
 
    ```
-   http://localhost:8000
+   http://localhost:8080
    ```
 
    You will see the LlamaIndex chat app UI, where you can interact with the agent.

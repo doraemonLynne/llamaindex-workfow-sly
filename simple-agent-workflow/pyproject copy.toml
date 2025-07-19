@@ -1,0 +1,80 @@
+[project]
+name = "simple-agent-workflow"
+
+version = "0.0.1"
+description = "simple agent workflow"
+authors = [{name = "lshi", email = "shilinyong_sly@163.com"}]
+license = "MIT"
+maintainers = [{name = "lshi"}]
+keywords = [
+    "llamaindex",
+    "agent",
+    "llamaindex server",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "pytest",
+    "pytest-asyncio",
+    "llama-index-llms-dashscope>=0.3.0",  # Updated version
+    "llama-index-tools-mcp",
+    "llama-index-llms-langchain",
+    "llama-index", 
+    "langchain-community",
+    "llama-index-embeddings-huggingface",
+    "llama-index-llms-huggingface",
+    "python-dotenv>=1.0.0,<2.0.0", 
+    "pydantic>=2.11.5,<3.0.0", 
+    "aiostream>=0.5.2,<0.6.0", 
+    "llama-index-core>=0.12.28,<0.13.0", 
+    "llama-index-readers-file>=0.4.6,<1.0.0", 
+    "llama-index-indices-managed-llama-cloud>=0.6.3,<1.0.0", 
+    "docx2txt>=0.8,<0.9", 
+    "llama-index-llms-openai>=0.3.2,<0.4.0", 
+    "llama-index-embeddings-openai>=0.3.1,<0.4.0",
+    "fastapi",
+    "llama-index-server",
+    "e2b-code-interpreter>=1.1.1,<2.0.0",
+    "llama-cloud>=0.1.17,<1.0.0",
+    "markdown>=3.7,<4.0",
+    "xhtml2pdf>=0.2.17,<1.0.0",
+]
+
+[project.scripts]
+generate = "src.generate:generate_index"
+
+[project.optional-dependencies]
+dev = ["mypy>=1.8.0,<2.0.0", "pytest>=8.3.5,<9.0.0", "pytest-asyncio>=0.25.3,<0.26.0" ]
+
+[tool.mypy]
+python_version = "3.11"
+plugins = "pydantic.mypy"
+exclude = [ "tests", "venv", ".venv", "output", "config" ]
+check_untyped_defs = true
+warn_unused_ignores = false
+show_error_codes = true
+namespace_packages = true
+ignore_missing_imports = true
+follow_imports = "silent"
+implicit_optional = true
+strict_optional = false
+disable_error_code = [ "return-value", "assignment" ]
+
+[[tool.mypy.overrides]]
+module = "src.*"
+ignore_missing_imports = false
+
+[tool.hatch]
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build]
+[tool.hatch.build.targets]
+[tool.hatch.build.targets.wheel]
+packages = [ "src" ]
+
+[build-system]
+requires = [ "hatchling>=1.24" ]
+build-backend = "hatchling.build"
+
+
+
