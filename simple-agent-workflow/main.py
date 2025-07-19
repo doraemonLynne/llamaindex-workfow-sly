@@ -9,7 +9,7 @@ def create_app() -> FastAPI:
         verbose=True,
         workflow_factory=create_workflow,
         suggest_next_questions=True,
-        # env="dev",
+        env="dev",
         ui_config=UIConfig(
             starter_questions=[
                 "Tell me a funny joke",

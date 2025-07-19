@@ -1,16 +1,11 @@
 from dotenv import load_dotenv
-
 from llama_index.core.agent.workflow import AgentWorkflow
 from llama_index.core.settings import Settings
-# from llama_index.tools.mcp import BasicMCPClient, McpToolSpec
-
-# from src.index import get_index
-# from src.query import get_query_engine_tool
-# from src.citation import CITATION_SYSTEM_PROMPT, enable_citation
-from src.settings import init_settings
+from settings import init_settings
 import logging
 from llama_index.server.models import ChatRequest
 from typing import Optional
+import asyncio
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -18,31 +13,39 @@ logger = logging.getLogger(__name__)
 def create_workflow(chat_request: Optional[ChatRequest] = None) -> AgentWorkflow:
     load_dotenv()
     init_settings()
-    return AgentWorkflow.from_tools_or_functions( 
+    res = AgentWorkflow.from_tools_or_functions( 
         tools_or_functions=[],
         llm=Settings.llm,
         system_prompt="You are a helpful assistant that can tell a joke about Llama.",
     )
+    print(f"创建的工作流: {type(res).__name__}")
+    return res
 
-# def create_workflow() -> AgentWorkflow:
-#     load_dotenv()
-#     init_settings()
-#     index = get_index()
-#     if index is None:
-#         raise RuntimeError(
-#             "Index not found! Please run `uv run generate` to index the data first."
-#         )
-#     # Create a query tool with citations enabled
-#     query_tool = enable_citation(get_query_engine_tool(index=index))
+# 正确的测试函数
+async def test_workflow_response():
+    workflow = create_workflow()
+    
+    # 使用 user_msg 参数而不是 input
+    test_message = "请告诉我一个关于羊驼的笑话"
+    
+    try:
+        # 正确的调用方式
+        response = await workflow.run(user_msg=test_message)
+        
+        # 打印响应结果
+        print("=== 工作流响应 ===")
+        print(f"响应类型: {type(response)}")
+        print(f"响应内容: {response}")
+        
+        # 如果响应有特定属性，可以进一步提取
+        if hasattr(response, 'response'):
+            print(f"具体回答: {response.response}")
+        elif hasattr(response, 'message'):
+            print(f"消息内容: {response.message}")
+        
+    except Exception as e:
+        print(f"运行工作流时出错: {e}")
 
-#     # Define the system prompt for the agent
-#     # Append the citation system prompt to the system prompt
-#     system_prompt = """You are a helpful assistant"""
-#     system_prompt += CITATION_SYSTEM_PROMPT
-
-#     return AgentWorkflow.from_tools_or_functions(
-#     tools_or_functions=[query_tool],
-#     llm=Settings.llm,
-#     system_prompt=system_prompt)
-
-# workflow = create_workflow()
+# 运行测试
+if __name__ == "__main__":
+    asyncio.run(test_workflow_response())

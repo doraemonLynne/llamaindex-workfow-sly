@@ -24,6 +24,6 @@ def init_settings():
     )
     
     # Use Qwen embedding model
-    Settings.embed_model = HuggingFaceEmbedding(
-        model_name="Qwen/Qwen3-Embedding-0.6B"
-    )
+    # Settings.embed_model = HuggingFaceEmbedding(
+    #     model_name="Qwen/Qwen3-Embedding-0.6B"
+    # )
