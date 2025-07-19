@@ -1,6 +1,6 @@
 import asyncio
 from typing import Any, Optional, Union
-from pydantic import BaseModel
+from dataclasses import dataclass
 
 from llama_index.core.chat_engine.types import ChatMessage
 from llama_index.core.llms import LLM
@@ -35,8 +35,9 @@ class MCPResponseEvent(Event):
     error: Optional[str] = None
 
 
-class MCPWorkflowState(BaseModel):
-    """MCP Workflow state management"""
+@dataclass
+class MCPWorkflowState:
+    """MCP Workflow state management - using dataclass to avoid Pydantic serialization issues"""
     mcp_client: Optional[BasicMCPClient] = None
     mcp_tools: Optional[McpToolSpec] = None
     agent: Optional[FunctionAgent] = None
@@ -81,7 +82,11 @@ You can fetch IP information, process data, and more. Please choose appropriate 
             raise ValueError("user_msg is required to run the workflow")
         
         await ctx.set("user_msg", user_msg)
-        await ctx.set("state", MCPWorkflowState())
+        # 直接在 context 中存储状态信息，避免 Pydantic 序列化问题
+        await ctx.set("connected", False)
+        await ctx.set("mcp_client", None)
+        await ctx.set("mcp_tools", None)
+        await ctx.set("agent", None)
         
         # Initialize chat history
         chat_history = ev.chat_history or []
@@ -105,7 +110,7 @@ You can fetch IP information, process data, and more. Please choose appropriate 
     @step
     async def connect_mcp_server(
         self, ctx: Context, event: MCPConnectEvent
-    ) -> Union[MCPToolCallEvent, StopEvent]:
+    ) -> StopEvent:
         """Connect to MCP server and initialize tools"""
         try:
             # Create MCP client
@@ -128,13 +133,11 @@ You can fetch IP information, process data, and more. Please choose appropriate 
                 system_prompt=self.system_prompt,
             )
             
-            # Update state
-            state = await ctx.get("state")
-            state.mcp_client = mcp_client
-            state.mcp_tools = mcp_tools
-            state.agent = agent
-            state.connected = True
-            await ctx.set("state", state)
+            # 直接在 context 中更新状态
+            await ctx.set("mcp_client", mcp_client)
+            await ctx.set("mcp_tools", mcp_tools)
+            await ctx.set("agent", agent)
+            await ctx.set("connected", True)
             
             # Get user message and process
             user_msg = await ctx.get("user_msg")
@@ -178,32 +181,46 @@ You can fetch IP information, process data, and more. Please choose appropriate 
 # Usage example
 async def run_mcp_workflow_example():
     """Run MCP workflow example"""
-    from llama_index.llms.openai import OpenAI
-    
-    # Initialize LLM (you can replace with other LLMs)
-    llm = OpenAI(model="gpt-4")
-    
-    # Create workflow
-    workflow = MCPWorkflow(
-        llm=llm,
-        mcp_server_url="http://127.0.0.1:8001/sse",
-        allowed_tools=["fetch_ipinfo"]  # Only allow IP info tool
-    )
-    
-    # Run workflow
-    result = await workflow.run(
-        user_msg="Please get detailed information for IP address 8.8.8.8",
-        chat_history=[]
-    )
-    
-    print("Workflow Result:")
-    print(f"Response: {result['response']}")
-    if 'tool_calls' in result:
-        print(f"Tool Calls: {result['tool_calls']}")
-    if 'tool_results' in result:
-        print(f"Tool Results: {result['tool_results']}")
-    
-    return result
+    try:
+        # 尝试使用不同的 LLM 提供商
+        try:
+            from llama_index.llms.openai import OpenAI
+            llm = OpenAI(model="gpt-4")
+        except ImportError:
+            try:
+                from llama_index.llms.dashscope import DashScope
+                llm = DashScope(model="qwen-turbo")
+            except ImportError:
+                # 如果都没有，使用默认的 mock LLM
+                from llama_index.core.llms.mock import MockLLM
+                llm = MockLLM()
+                print("Warning: Using MockLLM. Please install a proper LLM provider.")
+        
+        # Create workflow
+        workflow = MCPWorkflow(
+            llm=llm,
+            mcp_server_url="http://127.0.0.1:8001/sse",
+            allowed_tools=["fetch_ipinfo"]  # Only allow IP info tool
+        )
+        
+        # Run workflow
+        result = await workflow.run(
+            user_msg="Please get detailed information for IP address 8.8.8.8",
+            chat_history=[]
+        )
+        
+        print("Workflow Result:")
+        print(f"Response: {result['response']}")
+        if 'tool_calls' in result:
+            print(f"Tool Calls: {result['tool_calls']}")
+        if 'tool_results' in result:
+            print(f"Tool Results: {result['tool_results']}")
+        
+        return result
+        
+    except Exception as e:
+        print(f"Error running workflow: {str(e)}")
+        return {"error": str(e)}
 
 
 if __name__ == "__main__":
