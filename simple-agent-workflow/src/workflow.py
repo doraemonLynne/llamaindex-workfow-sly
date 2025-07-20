@@ -16,22 +16,8 @@ logger = logging.getLogger(__name__)
 def create_workflow() -> AgentWorkflow:
     load_dotenv()
     init_settings()
-    index = get_index()
-    if index is None:
-        raise RuntimeError(
-            "Index not found! Please run `uv run generate` to index the data first."
-        )
-    # Create a query tool with citations enabled
-    query_tool = enable_citation(get_query_engine_tool(index=index))
-
-    # Define the system prompt for the agent
-    # Append the citation system prompt to the system prompt
-    system_prompt = """You are a helpful assistant"""
-    system_prompt += CITATION_SYSTEM_PROMPT
 
     return AgentWorkflow.from_tools_or_functions(
-    tools_or_functions=[query_tool],
+    tools_or_functions=[],
     llm=Settings.llm,
-    system_prompt=system_prompt)
-
-workflow = create_workflow()
+    system_prompt="You are a helpful assistant")

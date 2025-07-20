@@ -1,7 +1,7 @@
 import os
 
 from llama_index.core import Settings
-# from llama_index.llms.dashscope import DashScope
+from llama_index.llms.dashscope import DashScope
 # from llama_index.llms.openai import OpenAI
 from llama_index.llms.huggingface import HuggingFaceLLM
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
@@ -18,18 +18,18 @@ def init_settings():
     
     # Use DashScope LLM which supports function calling
     # Available models: qwen-turbo, qwen-plus, qwen-max, qwen-vl-plus, qwen-vl-max
-    # Settings.llm = DashScope(
-    #     model="qwen-max",
-    #     api_key=os.getenv("DASHSCOPE_API_KEY")
-    # )
-
-    Settings.llm=HuggingFaceInferenceAPI(
-        token=os.environ["HF_TOKEN"],
-        model_name="moonshotai/Kimi-K2-Instruct",
-        provider="auto"
+    Settings.llm = DashScope(
+        model="qwen-max",
+        api_key=os.getenv("DASHSCOPE_API_KEY")
     )
+
+    # Settings.llm=HuggingFaceInferenceAPI(
+    #     token=os.environ["HF_TOKEN"],
+    #     model_name="moonshotai/Kimi-K2-Instruct",
+    #     provider="auto"
+    # )
     
     # Use Qwen embedding model
-    Settings.embed_model = HuggingFaceEmbedding(
-        model_name="Qwen/Qwen3-Embedding-0.6B"
-    )
+    # Settings.embed_model = HuggingFaceEmbedding(
+    #     model_name="Qwen/Qwen3-Embedding-0.6B"
+    # )
