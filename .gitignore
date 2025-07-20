@@ -3,3 +3,5 @@
 __pycache__
 .ui
 node_modules
+
+uv.lock
