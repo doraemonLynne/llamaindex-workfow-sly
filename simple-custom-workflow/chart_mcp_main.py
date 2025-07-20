@@ -1,20 +1,18 @@
-from workflow.code_workflow import ArtifactWorkflow
 from fastapi import FastAPI
-
-# To use document artifact workflow, uncomment the following line
-# from workflow.document_workflow import ArtifactWorkflow
 from llama_index.core.workflow import Workflow
 from llama_index.server import LlamaIndexServer, UIConfig
 from llama_index.server.models import ChatRequest
 from settings import init_settings
 from llama_index.core.settings import Settings
+from workflow.chart_mcp_workflow import ChartMCPWorkflow
+
 
 
 def create_workflow(chat_request: ChatRequest) -> Workflow:
     init_settings()
-    workflow = ArtifactWorkflow(
+    workflow = ChartMCPWorkflow(
         llm=Settings.llm,
-        chat_request=chat_request
+        mcp_server_url="http://localhost:1122/sse"
     )
     return workflow
 
@@ -42,4 +40,4 @@ app = create_app()
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("main:app", host="127.0.0.1", port=8081, reload=True)
+    uvicorn.run("chart_mcp_main:app", host="127.0.0.1", port=8081, reload=True)

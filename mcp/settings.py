@@ -1,10 +1,10 @@
 import os
 
 from llama_index.core import Settings
-from llama_index.llms.dashscope import DashScope
-from llama_index.llms.openai import OpenAI
-from llama_index.llms.huggingface import HuggingFaceLLM
-from llama_index.llms.huggingface_api import HuggingFaceInferenceAPI
+# from llama_index.llms.dashscope import DashScope
+# from llama_index.llms.openai import OpenAI
+# from llama_index.llms.huggingface import HuggingFaceLLM
+# from llama_index.llms.huggingface_api import HuggingFaceInferenceAPI
 from dotenv import load_dotenv
 from llama_index.llms.ollama import Ollama
 
@@ -30,18 +30,18 @@ def init_settings():
 
     # Fixed HuggingFaceLLM initialization
     
-    Settings.llm = HuggingFaceInferenceAPI(
-        model_name="Qwen/Qwen3-0.6B",
-        token=os.environ["HF_TOKEN"],
-        provider="auto",  # this will use the best provider available
-    )
+    # Settings.llm = HuggingFaceInferenceAPI(
+    #     model_name="Qwen/Qwen3-0.6B",
+    #     token=os.environ["HF_TOKEN"],
+    #     provider="auto",  # this will use the best provider available
+    # )
 
     # Alternative: Use Ollama (recommended for local deployment)
-    # Settings.llm = Ollama(
-    #     model="llama3.2:3b",  # 或者其他你已安装的模型
-    #     base_url="http://192.168.100.213:11434",  # Ollama 默认地址
-    #     request_timeout=120.0,  # 增加超时时间
-    # )
+    Settings.llm = Ollama(
+        model="llama3.2:3b",  # 或者其他你已安装的模型
+        base_url="http://192.168.100.213:11434",  # Ollama 默认地址
+        request_timeout=120.0,  # 增加超时时间
+    )
 
     # 代码生成模型
     # Settings.llm = Ollama(model="codellama")

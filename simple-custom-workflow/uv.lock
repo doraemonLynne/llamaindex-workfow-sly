@@ -454,6 +454,19 @@ wheels = [
 ]
 
 [[package]]
+name = "dashscope"
+version = "1.22.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "aiohttp" },
+    { name = "requests" },
+    { name = "websocket-client" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/08/06/5dc2f9e391faf8f980c11e8dea5b06e0fc8d08aeca6298e12e6bc5a8ca4b/dashscope-1.22.2-py3-none-any.whl", hash = "sha256:781952cc9ce38cd2080a9d9f1cfabda55013dd2c996d3eca49863c8532db26b9", size = 1273150, upload-time = "2025-03-06T06:46:23.62Z" },
+]
+
+[[package]]
 name = "dataclasses-json"
 version = "0.6.7"
 source = { registry = "https://pypi.org/simple" }
@@ -1227,6 +1240,19 @@ wheels = [
 ]
 
 [[package]]
+name = "llama-index-llms-dashscope"
+version = "0.4.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "dashscope" },
+    { name = "llama-index-core" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2f/6f/36887a3a91223e5e353df95a44d377208d9d45626b5e677165af06e85055/llama_index_llms_dashscope-0.4.1.tar.gz", hash = "sha256:32159ea4ecd07a62730d400558a06d08abf003e229b9b39175a4ea3ac9beb8d3", size = 8041, upload-time = "2025-06-30T23:58:55.556Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/58/f0/e6483403c5677527c7b92b6d752af7302d4e7ab381a0ff9952795e52daad/llama_index_llms_dashscope-0.4.1-py3-none-any.whl", hash = "sha256:337a7fb289547cafa42afb41e3c067508f86d3cd63d7e89659f07db5a185249b", size = 8224, upload-time = "2025-06-30T23:58:54.523Z" },
+]
+
+[[package]]
 name = "llama-index-llms-huggingface"
 version = "0.5.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1251,6 +1277,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/21/0c/ccf96de51b842fe1a6d5ccb666b54d78fe14ebb97f08dd82ff969c6b6a62/llama_index_llms_huggingface_api-0.5.0.tar.gz", hash = "sha256:87826a7ebc6946606f0c80007febd89688bd602622e2dbace452e0cde39a88bf", size = 7726, upload-time = "2025-05-30T00:09:14.426Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/79/1d/be41914d77910f01a8608dadd6b8902548229e7bf7fd564f5f2fdf1c1f15/llama_index_llms_huggingface_api-0.5.0-py3-none-any.whl", hash = "sha256:b3ec0452c61be163fb934c3f507906717989dfa40d81a0b9489f3348e96b0979", size = 7489, upload-time = "2025-05-30T00:09:12.494Z" },
+]
+
+[[package]]
+name = "llama-index-llms-ollama"
+version = "0.6.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "llama-index-core" },
+    { name = "ollama" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/84/77/b2a7b93fb5680fd8daf71ab23de45723dca602b1fff0907fb47bb79ca598/llama_index_llms_ollama-0.6.2.tar.gz", hash = "sha256:1be4081f0ba9c9dd3b5d270c2e8009c256b3b6a1312cb38a0c724dba8bac1304", size = 8441, upload-time = "2025-06-07T15:35:36.925Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/aa/3a/49ad5945316be3dfaafc0f3d2c10c95fabd74aa5c7209f8d9ee89c91f76b/llama_index_llms_ollama-0.6.2-py3-none-any.whl", hash = "sha256:b714311c3a1e3e5c9d9d2a46c1c12cc3e6865e8b81f1863412da41c1725a1144", size = 8137, upload-time = "2025-06-07T15:35:35.584Z" },
 ]
 
 [[package]]
@@ -1364,8 +1403,10 @@ dependencies = [
     { name = "huggingface-hub", extra = ["inference"] },
     { name = "llama-cloud" },
     { name = "llama-index" },
+    { name = "llama-index-llms-dashscope" },
     { name = "llama-index-llms-huggingface" },
     { name = "llama-index-llms-huggingface-api" },
+    { name = "llama-index-llms-ollama" },
     { name = "llama-index-llms-openai" },
     { name = "llama-index-server" },
     { name = "llama-index-tools-mcp" },
@@ -1380,8 +1421,10 @@ requires-dist = [
     { name = "huggingface-hub", extras = ["inference"] },
     { name = "llama-cloud", specifier = ">=0.1.17,<1.0.0" },
     { name = "llama-index" },
+    { name = "llama-index-llms-dashscope" },
     { name = "llama-index-llms-huggingface" },
     { name = "llama-index-llms-huggingface-api" },
+    { name = "llama-index-llms-ollama" },
     { name = "llama-index-llms-openai" },
     { name = "llama-index-server" },
     { name = "llama-index-tools-mcp" },
@@ -2041,6 +2084,19 @@ source = { registry = "https://pypi.org/simple" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/56/9a/fff8376f8e3d084cd1530e1ef7b879bb7d6d265620c95c1b322725c694f4/nvidia_nvtx_cu12-12.6.77-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:b90bed3df379fa79afbd21be8e04a0314336b8ae16768b58f2d34cb1d04cd7d2", size = 89276, upload-time = "2024-11-20T17:38:27.621Z" },
     { url = "https://files.pythonhosted.org/packages/9e/4e/0d0c945463719429b7bd21dece907ad0bde437a2ff12b9b12fee94722ab0/nvidia_nvtx_cu12-12.6.77-py3-none-manylinux2014_x86_64.whl", hash = "sha256:6574241a3ec5fdc9334353ab8c479fe75841dbe8f4532a8fc97ce63503330ba1", size = 89265, upload-time = "2024-10-01T17:00:38.172Z" },
+]
+
+[[package]]
+name = "ollama"
+version = "0.5.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "httpx" },
+    { name = "pydantic" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8d/96/c7fe0d2d1b3053be614822a7b722c7465161b3672ce90df71515137580a0/ollama-0.5.1.tar.gz", hash = "sha256:5a799e4dc4e7af638b11e3ae588ab17623ee019e496caaf4323efbaa8feeff93", size = 41112, upload-time = "2025-05-30T21:32:48.679Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d6/76/3f96c8cdbf3955d7a73ee94ce3e0db0755d6de1e0098a70275940d1aff2f/ollama-0.5.1-py3-none-any.whl", hash = "sha256:4c8839f35bc173c7057b1eb2cbe7f498c1a7e134eafc9192824c8aecb3617506", size = 13369, upload-time = "2025-05-30T21:32:47.429Z" },
 ]
 
 [[package]]
@@ -3694,6 +3750,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/0b/02/ae6ceac1baeda530866a85075641cec12989bd8d31af6d5ab4a3e8c92f47/webencodings-0.5.1.tar.gz", hash = "sha256:b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923", size = 9721, upload-time = "2017-04-05T20:21:34.189Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f4/24/2a3e3df732393fed8b3ebf2ec078f05546de641fe1b667ee316ec1dcf3b7/webencodings-0.5.1-py2.py3-none-any.whl", hash = "sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78", size = 11774, upload-time = "2017-04-05T20:21:32.581Z" },
+]
+
+[[package]]
+name = "websocket-client"
+version = "1.8.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e6/30/fba0d96b4b5fbf5948ed3f4681f7da2f9f64512e1d303f94b4cc174c24a5/websocket_client-1.8.0.tar.gz", hash = "sha256:3239df9f44da632f96012472805d40a23281a991027ce11d2f45a6f24ac4c3da", size = 54648, upload-time = "2024-04-23T22:16:16.976Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5a/84/44687a29792a70e111c5c477230a72c4b957d88d16141199bf9acb7537a3/websocket_client-1.8.0-py3-none-any.whl", hash = "sha256:17b44cc997f5c498e809b22cdf2d9c7a9e71c02c8cc2b6c56e7c2d1239bfa526", size = 58826, upload-time = "2024-04-23T22:16:14.422Z" },
 ]
 
 [[package]]
