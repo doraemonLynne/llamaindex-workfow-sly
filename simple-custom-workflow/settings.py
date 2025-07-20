@@ -1,8 +1,10 @@
 import os
 
 from llama_index.core import Settings
-from llama_index.llms.dashscope import DashScope
-# from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+# from llama_index.llms.dashscope import DashScope
+from llama_index.llms.openai import OpenAI
+from llama_index.llms.huggingface import HuggingFaceLLM
+from llama_index.llms.huggingface_api import HuggingFaceInferenceAPI
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,15 +12,27 @@ load_dotenv()
 def init_settings():
     
     # Ensure DashScope API key is set
-    if os.getenv("DASHSCOPE_API_KEY") is None:
-        raise RuntimeError("DASHSCOPE_API_KEY is missing in environment variables")
+    if os.getenv("HF_TOKEN") is None:
+        raise RuntimeError("HF_TOKEN is missing in environment variables")
     
     # Use DashScope LLM which supports function calling
     # Available models: qwen-turbo, qwen-plus, qwen-max, qwen-vl-plus, qwen-vl-max
-    Settings.llm = DashScope(
-        model="qwen-max",
-        api_key=os.getenv("DASHSCOPE_API_KEY")
+    # Settings.llm = DashScope(
+    #     model="qwen-max",
+    #     api_key=os.getenv("DASHSCOPE_API_KEY")
+    # )
+
+    Settings.llm=HuggingFaceInferenceAPI(
+        token=os.environ["HF_TOKEN"],
+        # model_name="moonshotai/Kimi-K2-Instruct",
+        model_name="NousResearch/Hermes-3-Llama-3.1-405B",
+        provider="auto"
     )
+    # Settings.llm = OpenAI(
+    #     base_url="https://api-inference.huggingface.co/v1",
+    #     api_key=os.environ["HF_TOKEN"],
+    #     model="microsoft/DialoGPT-medium"  # Use a model that supports function calling
+    # )
     
     # Use Qwen embedding model
     # Settings.embed_model = HuggingFaceEmbedding(

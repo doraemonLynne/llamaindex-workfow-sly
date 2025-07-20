@@ -8,14 +8,14 @@ from llama_index.server import LlamaIndexServer, UIConfig
 from llama_index.server.models import ChatRequest
 from settings import init_settings
 from llama_index.core.settings import Settings
+from mcp_workflow import ChartMCPWorkflow
 
 
 def create_workflow(chat_request: ChatRequest) -> Workflow:
     init_settings()
-    workflow = ArtifactWorkflow(
+    workflow = ChartMCPWorkflow(
         llm=Settings.llm,
-        chat_request=chat_request,
-        timeout=120.0,
+        mcp_server_url="http://127.0.0.1:1122/sse"
     )
     return workflow
 
@@ -26,6 +26,7 @@ def create_app() -> FastAPI:
         env="dev",
         ui_config=UIConfig(
             starter_questions=[
+                "Draw a pie chart",
                 "Write a simple calculator app",
                 "Write a guideline on how to use LLM effectively",
             ],
