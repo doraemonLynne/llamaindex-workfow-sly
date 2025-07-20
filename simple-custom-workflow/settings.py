@@ -2,8 +2,13 @@ import os
 
 from llama_index.core import Settings
 from llama_index.llms.dashscope import DashScope
+# from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def init_settings():
+    
     # Ensure DashScope API key is set
     if os.getenv("DASHSCOPE_API_KEY") is None:
         raise RuntimeError("DASHSCOPE_API_KEY is missing in environment variables")
